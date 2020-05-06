@@ -1,0 +1,6 @@
+[submodule "ios-library"]
+	path = ios-library
+	url = https://github.com/owncloud/ios-library.git
+[submodule "documentation"]
+	path = documentation
+	url = https://github.com/owncloud/documentation

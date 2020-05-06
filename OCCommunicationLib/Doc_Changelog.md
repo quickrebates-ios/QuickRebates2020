@@ -1,0 +1,114 @@
+## What's new in 2.2.1 version
+- Bug fixed possible crash
+
+## 2.2.0 version
+- Added OAuth2 support with automatic refresh of new tokens
+- Added support to new public share link option that allows you to share a folder with only the option of uploading files to it
+- Added methods to get user data and features supported by server
+- Fix updating share link permissions
+- Improved cookies handling
+- Improved OCErrors
+- Updated travis file
+
+
+## 2.1.0 version
+- Added support multiple share links
+- Added new method to get supported server features by version
+- Improve error handling
+- Update user endpoint
+- Update travis file
+
+
+## 2.0.3 version
+- Added specific error code for maintenance mode
+- Added specific error code for quota excess
+- Improved recognition of SAML expiration
+- Improved handling of cookies in HEAD requests
+
+## 2.0.2 version
+- Updated travis validation
+
+## 2.0.1 version
+- Updated Copyright, Xcode8 and iOS10 support
+
+## 2.0.0 version
+
+- Updated AFNetworking library v3.1.0
+- All the network request made using NSOperation was modified to use NSURLSession
+- The ownCloud library it is ready to be used on Apple TV and Apple Watch
+- The download and upload now return the NSURLSessionTask to be canceled instead the NSOperation 
+- Updated share parser
+
+
+## 1.2.1 version
+
+- Added support to get remote thumbnails for images and videos
+- Added auto-complete of external users when you share (this relies on defining remote trusted servers)
+- Added support to allow editing permission when sharing a folder by link
+- Changes in AFNetworking security policy to request accept new certificate after updating it
+
+
+## 1.2.0 version
+
+- Improved the search of users and groups for the internal share
+- Added support to share with all types of sharees (user, group, public share,federated sharing ); taking advantage of the  shareType
+- Support to manage internal share privileges
+- Added the possibility to detect a redirected server on all the requests
+- Added support for ownCloud 9
+- Added new tests for share and capabilities 
+
+
+## 1.1.5 version
+
+- Added support to work with Sharee API (New server API from version 8.2 to manage users and groups)
+
+ + Update the method "- (void) hasServerShareSupport:..." in order to get also if the server support "sharee api". Now the method is called "- (void) hasServerShareAndShareeSupport:..." and return in the block "BOOL hasShareSupport, BOOL hasShareeSupport" boolean properties. 
+ + Search users and groups. New method that return a list of "OCShareUser" objects using a search string: "- (void) searchUsersAndGroupsWith...". Used to get lists of users and group in order to share files or folders with them using the new "shareWith" method. 
+ + New object class called "OCShareUser" that it used to store users or groups.
+ + New method share with users: "- (void)shareWith:...". Using the name property of the OCShare object you can share file or folders with users or groups.
+
+- Updated AFNetworking library v2.6.0
+
+- Modified security policy properties to fix some issues with requests that were canceled after a while using self signed servers.
+  
+
+## 1.1.4 version
+
+Added token support in read folder method for multiaccount. In order to differenciate the user account in the response from the server side we have added token support, for the moment only in the readFolder method.
+
+We have a method in UtilsFramework.h called "getUserSessionToken" to get a unique session id.
+
++ (NSString *) getUserSessionToken;
+
+We can use that to send as a parameter on readFolder method. Also if only we have a single account we can use "nil" 
+
+- (void) readFolder: (NSString *) path withUserSessionToken:(NSString *)token
+    onCommunication:(OCCommunication *)sharedOCCommunication
+     successRequest:(void(^)(NSHTTPURLResponse *response, NSArray *items, NSString *redirectedServer, NSString *token)) successRequest
+     failureRequest:(void(^)(NSHTTPURLResponse *response, NSError *error, NSString *token)) failureRequest;
+
+
+##  1.1.3 version
+
+From OC 8.1, the server manage the forbbiden characters except the '/'. 
+
+New method to check if the server has forbidden characters support.
+- (void) hasServerForbiddenCharactersSupport:(NSString*) path onCommunication:(OCCommunication *)sharedOCCommunication .....
+
+We have prepared the current createFolder and moveFileOrFolder methods for do support that. We have added a new BOOL parameter "isFCSupported" using the previews method you can know what is the value of "isFCSupported"
+
+You can see more specific in OCCommunication class.
+
+## Previous versions
+
+
+# Download queue
+When we download a file we use a queue in order to download the files one by one. 
+By default the queue es FIFO. We will download the files in the order that the developer add them.
+But if we want to use the queue as LIFO (download first the last file that we add to download) we need to call "setDownloadQueueToLIFO" method
+Code example
+~~~~~~~~~~~~
+.. code-block:: objective-		c
+//Set the downloads with LIFO system
+[[AppDelegate sharedOCCommunication] setDownloadQueueToLIFO:YES];
+ç

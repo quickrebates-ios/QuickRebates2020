@@ -1,0 +1,20 @@
+language: objective-c
+osx_image: xcode8.3
+#xcode_project: OCCommunicationLib/ownCloud iOS library.xcodeproj
+#xcode_scheme: ownCloud iOS library
+#xcode_sdk: iphonesimulator
+
+script:
+- set -o pipefail && xcodebuild -project 'OCCommunicationLib/ownCloud iOS library.xcodeproj' -scheme 'ownCloud iOS library' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.0' clean test build | xcpretty -c
+#- xctool test -project 'OCCommunicationLib/ownCloud iOS library.xcodeproj' -scheme 'ownCloud iOS library' -sdk iphonesimulator -UseSanitizedBuildSystemEnvironment=YES
+ 
+before_install:
+- brew update; brew update
+- echo "#define k_base_url @\"$baseUrlTravis\"" > OCCommunicationLib/OCCommunicationLibTests/ConfigTests.h
+- echo "#define k_webdav_base_url @\"$webdavBaseUrlTravis\"" >> OCCommunicationLib/OCCommunicationLibTests/ConfigTests.h
+- echo "#define k_user @\"$userTravis\"" >> OCCommunicationLib/OCCommunicationLibTests/ConfigTests.h
+- echo "#define k_password @\"$passwordTravis\"" >> OCCommunicationLib/OCCommunicationLibTests/ConfigTests.h
+- echo "#define k_path_test_folder @\"$(date +%s)\"" >> OCCommunicationLib/OCCommunicationLibTests/ConfigTests.h
+- echo "#define k_user_to_share @\"$userToShareTravis\"" >> OCCommunicationLib/OCCommunicationLibTests/ConfigTests.h
+- echo "#define k_group_to_share @\"$groupToShareTravis\"" >> OCCommunicationLib/OCCommunicationLibTests/ConfigTests.h
+- echo "#define k_remote_user_to_share @\"$remoteUserToShareTravis\"" >> OCCommunicationLib/OCCommunicationLibTests/ConfigTests.h
